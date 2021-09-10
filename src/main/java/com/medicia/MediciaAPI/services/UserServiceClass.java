@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.medicia.MediciaAPI.dao.UserDao;
+import com.medicia.MediciaAPI.entities.MedicalHistory;
 import com.medicia.MediciaAPI.entities.User;
 
 @Service
@@ -44,5 +45,25 @@ public class UserServiceClass implements UserService {
 		// TODO Auto-generated method stub
 		userDao.deleteById(userId);
 	}
+	
+	@Override
+	public User findUserByEmail(String userEmail)
+	{
+		List<User> users = getAllUsers();
+		for(User user : users)
+		{
+			if(user.getUserEmail().equals(userEmail))
+				return user;
+		}
+		return null;
+	}
 
+	@Override
+	public List<MedicalHistory> getAllTheMedicalHistoriesByUserId(long userID) {
+		// TODO Auto-generated method stub
+		User user = getUserById(userID);
+		return user.getUserMedicalHistories();
+	}
+
+	
 }

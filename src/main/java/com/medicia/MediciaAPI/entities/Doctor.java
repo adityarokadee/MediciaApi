@@ -1,13 +1,21 @@
 package com.medicia.MediciaAPI.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Doctor {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long docId;
 	private String docName;
 	private String docEmail;
@@ -17,6 +25,17 @@ public class Doctor {
 	private String organizationType;
 	private int rating;
 	private Date dateOfRegister;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "doc_id", referencedColumnName = "docId")
+	private List<MedicalHistory> medicalHistoriesDoctorChecked = new ArrayList<MedicalHistory>();
+	
+	public List<MedicalHistory> getMedicalHistoriesDoctorChecked() {
+		return medicalHistoriesDoctorChecked;
+	}
+	public void setMedicalHistoriesDoctorChecked(MedicalHistory medicalHistories) {
+		this.medicalHistoriesDoctorChecked.add(medicalHistories);
+	}
 	public long getDocId() {
 		return docId;
 	}

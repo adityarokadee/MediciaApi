@@ -13,14 +13,29 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.medicia.MediciaAPI.entities.Doctor;
 import com.medicia.MediciaAPI.entities.User;
 import com.medicia.MediciaAPI.services.UserService;
+import com.medicia.MediciaAPI.visibility.services.AddedRequestService;
+import com.medicia.MediciaAPI.visibility.services.PendingRequestService;
 
 @RestController
 public class UserController {
 	
 	@Autowired
 	private UserService userservice;
+	
+	@Autowired
+	private PendingRequestService prs;
+	
+	@Autowired
+	private AddedRequestService ars;
+	
+	//get the initial requests
+	@GetMapping("/")
+	public String home() {
+		return "Welcome to medicia";
+	}
 	
 	//get all users
 	@GetMapping("/users")
@@ -69,5 +84,39 @@ public class UserController {
 			// TODO: handle exception
 			return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	
+	@GetMapping("/users/countOfPendingRequest/{UserId}")
+	public int countPendingRequest(@PathVariable Long UserId) {
+		return prs.countPendingRequest(UserId);
+	}
+	
+	@GetMapping("/users/getPendingDoctorsRequest/{UserId}")
+	public List<Doctor> getPendingDoctorsRequest(@PathVariable long UserId) {
+		return prs.getPendingDoctorsRequest(UserId);
+	}
+	
+	@GetMapping("/users/countOfDoctorsApproved/{UserId}")
+	public int countDoctorsApproved(@PathVariable Long UserId) {
+		return ars.countDoctorsApproved(UserId);
+	}
+	
+	@GetMapping("/users/getDoctorsAllowedToViewProfile/{UserId}")
+	public List<Doctor> getDoctorsAllowedToViewProfile(Long UserId)
+	{
+		return ars.getDoctorsAllowedToViewProfile(UserId);
+	}
+	
+	@PostMapping("/users/addDoctorToApprove/userId/{userId}/doctorId/{docId}")
+	public void addDoctorToApprove(@PathVariable("userId") Long userId, @PathVariable("docId") Long docId)
+	{
+		prs.addDoctorToApprove(userId, docId);
+	}
+	
+	@PostMapping("/users/rejectDoctorToViewProfile/userId/{UserId}/doctorId/{DoctorId}")
+	public void rejectDoctorToViewProfile(@PathVariable("UserId") Long UserId, @PathVariable("DoctorId") Long DoctorId) 
+	{
+		prs.rejectDoctorToViewProfile(UserId, DoctorId);
 	}
 }

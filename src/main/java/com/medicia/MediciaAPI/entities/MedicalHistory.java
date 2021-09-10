@@ -1,10 +1,13 @@
 package com.medicia.MediciaAPI.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class MedicalHistory {
@@ -18,13 +21,31 @@ public class MedicalHistory {
 	private String bloodPressure;
 	private String handicapped;
 	private String haemoglobin;
-
-	@OneToOne
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private User user;
+	
+	public User getUser() {
+		return user;
+	}
 
-	@OneToOne
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Doctor doctor;
 	
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
 	public MedicalHistory(String diasease, String allergies, String medicine, String bloodGroup, String bloodPressure,
 			String handicapped, String haemoglobin) {
 		super();
@@ -104,21 +125,5 @@ public class MedicalHistory {
 
 	public void setHaemoglobin(String haemoglobin) {
 		this.haemoglobin = haemoglobin;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Doctor getDoctor() {
-		return doctor;
-	}
-
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
 	}
 }
