@@ -9,7 +9,7 @@ When we go to see a doctor, most of the times we have to answer a lot of questio
 ## Solution
 Create an online Medical history data base that would allow us to have access to our medical history regardless of where we are. Provide access to our medical history to those doctors who are going to treat us, which would form a better understanding of the patients’ medical history for prescribing medicines, and lastly, update the data base with each new medicine/treatment.
 
-## Contributing to the Project.
+## Contributing to the Project
  Step 1 : Fork the repository.
  Step 2 : Clone the repository in your local machine.
  Step 3 : Build the Application in your local machine, Use JDK >= 1.8.
